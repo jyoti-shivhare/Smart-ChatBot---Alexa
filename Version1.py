@@ -19,3 +19,7 @@ def respond(message):
         # Return the "default" message
         bot_message = responses["default"]
     return bot_message
+# call send_message() in the IPython Shell with the following questions:
+# "what's today's weather?"
+# "what's your name?"
+# "what's your favorite color?"
