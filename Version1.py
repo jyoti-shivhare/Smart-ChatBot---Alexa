@@ -236,3 +236,73 @@ for idx, sentence in enumerate(sentences):
     doc = nlp(sentence)
     # Save the document's .vector attribute to the corresponding row in X
     X[idx, :] = doc.vector
+
+	
+## Training the Support Vector Machine using ATIS dataset
+
+# Import SVC
+from sklearn.svm import SVC
+
+# Create a support vector classifier
+clf = SVC(C=1)
+
+# Fit the classifier using the training data
+clf.fit(X_train, y_train)
+
+# Predict the label of the test set
+y_pred = clf.predict(X_test)
+
+# Count the number of correct predictions
+n_correct = 0
+for i in range(len(y_test)):
+    if y_pred[i] == y_test[i]:
+        n_correct += 1
+
+print("Predicted {0} correctly out of {1} test examples".format(n_correct, len(y_test))) # output: Predicted 162 correctly out of 201 test examples
+
+
+## Using spaCy's entity recogniser
+
+# Define included entities
+include_entities = ['DATE', 'ORG', 'PERSON']
+
+# Define extract_entities()
+def extract_entities(message):
+    # Create a dict to hold the entities
+    ents = dict.fromkeys(include_entities)
+    # Create a spacy document
+    doc = nlp(message)
+    for ent in doc.ents:
+        if ent.label_ in include_entities:
+            # Save interesting entities
+            ents[ent.label_] = ent.text
+    return ents
+
+print(extract_entities('friends called Mary who have worked at Google since 2010'))
+print(extract_entities('people who graduated from MIT in 1999')) # output: {'PERSON': None, 'DATE': '2010', 'ORG': None} {'PERSON': None, 'DATE': None, 'ORG': None}
+
+# Create the document
+doc = nlp("let's see that jacket in red and some blue jeans")
+
+# Iterate over parents in parse tree until an item entity is found
+def find_parent_item(word):
+    # Iterate over the word's ancestors
+    for parent in word.ancestors:
+        # Check for an "item" entity
+        if entity_type(parent) == "item":
+            return parent.text
+    return None
+
+# For all color entities, find their parent item
+def assign_colors(doc):
+    # Iterate over the document
+    for word in doc:
+        # Check for "color" entities
+        if entity_type(word) == "color":
+            # Find the parent
+            item =  find_parent_item(word)
+            print("item: {0} has color : {1}".format(item, word))
+
+# Assign the colors
+assign_colors(doc)
+
