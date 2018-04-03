@@ -1,4 +1,4 @@
-# Smart-ChatBot---Alexa
+# Smart AI ChatBot---Inspired by Mitsuku and Alexa
 
 According to Oxford Dictionaries, a chatbot is
 
@@ -9,3 +9,4 @@ Derived from “chat robot”, "chatbots" allow for highly engaging, conversatio
 
 With the advent of deep learning technologies such as text-to-speech, automatic speech recognition, and natural language processing, chatbots that simulate human conversation and dialogue can now be found in call center and customer service workflows, DevOps management, and as personal assistants.
 
+![Explanation of how it works](https://www.wordstream.com/images/chatbots-how-chatbots-work.jpg)
