@@ -125,3 +125,24 @@ def replace_pronouns(message):
 print(replace_pronouns("my last birthday"))
 print(replace_pronouns("when you went to Florida"))
 print(replace_pronouns("I had my own castle"))
+
+# Define respond()
+def respond(message):
+    # Call match_rule
+    response, phrase = match_rule(rules, message)
+    if '{0}' in response:
+        # Replace the pronouns in the phrase
+        phrase = replace_pronouns(phrase)
+        # Include the phrase in the response
+        response = response.format(phrase)
+    return response
+
+# Send the messages
+send_message("do you remember your last birthday")
+send_message("do you think humans should be worried about AI")
+send_message("I want a robot friend")
+send_message("what if you could be anything you wanted")
+
+## Defining a "keywords" dictionary
+keywords = 
+{'goodbye': ['bye', 'farewell'], 'greet': ['hello', 'hi', 'hey'], 'thankyou': ['thank', 'thx']}
