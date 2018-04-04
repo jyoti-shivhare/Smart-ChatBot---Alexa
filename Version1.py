@@ -349,3 +349,46 @@ interpreter = trainer.train(training_data)
 print(interpreter.parse("show me Chinese food in the centre of town"))
 print(interpreter.parse("I want an Indian restaurant in the west"))
 print(interpreter.parse("are there any good pizza places in the center?"))
+
+
+## SQL from NLU
+# Define find_hotels()
+def find_hotels(params):
+    # Create the base query
+    query = 'SELECT * FROM hotels'
+    # Add filter clauses for each of the parameters
+    if len(params) > 0:
+        filters = ["{}=?".format(k) for k in params]
+        query += " WHERE " + " and ".join(filters)
+    # Create the tuple of values
+    t = tuple(params.values())
+    
+    # Open connection to DB
+	# Import sqlite3
+    import sqlite3
+    conn = sqlite3.connect("hotels.db")
+    # Create a cursor
+    c = conn.cursor()
+    # Execute the query
+    c.execute(query,t)
+    # Return the results
+    c.fetchall()
+
+
+# Define respond()
+def respond(message):
+    # Extract the entities
+    entities = interpreter.parse(message)["entities"]
+    # Initialize an empty params dictionary
+    params = {}
+    # Fill the dictionary with entities
+    for ent in entities:
+        params[ent["entity"]] = str(ent["value"])
+
+    # Find hotels that match the dictionary
+    results = find_hotels(params)
+    # Get the names of the hotels and index of the response
+    names = [r[0] for r in results]
+    n = min(len(results),3)
+    # Select the nth element of the responses array
+    return responses[n].format(*names)
